@@ -1,0 +1,20 @@
+name: build-zip
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create zip
+        run: |
+          zip -r gpt-translate-${{ github.ref_name }}.zip . -x "*.git*"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpt-translate-${{ github.ref_name }}
+          path: gpt-translate-${{ github.ref_name }}.zip

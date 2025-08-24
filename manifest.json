@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "GPT Translate",
+  "version": "0.1.0",
+  "description": "GPT Translate \u2014 auto-translate webpages using the OpenAI API.",
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://api.openai.com/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "translator.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "options_page": "options.html",
+  "action": {
+    "default_title": "GPT Translate",
+    "default_popup": "popup.html"
+  },
+  "commands": {
+    "toggle-translate": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y"
+      },
+      "description": "Toggle translation for this tab"
+    }
+  }
+}

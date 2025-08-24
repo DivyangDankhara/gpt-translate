@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>GPT Translate — Options</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 16px; max-width: 680px; }
+    label { display:block; margin: 12px 0 6px; }
+    input[type="password"], input[type="text"] { width: 100%; padding: 10px; }
+    button { padding: 10px 14px; }
+    .hint { color:#666; }
+  </style>
+</head>
+<body>
+  <h2>GPT Translate — Options</h2>
+  <p>Paste your OpenAI API key. It only stays in your browser’s local storage.</p>
+  <label>OpenAI API Key</label>
+  <input id="apiKey" type="password" placeholder="sk-..." />
+  <div style="margin-top:8px">
+    <button id="save">Save</button>
+  </div>
+  <p class="hint">You can create and manage API keys in your OpenAI account.</p>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>GPT Translate</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 12px; width: 270px; }
+    label { display:block; margin: 8px 0 4px; }
+    button, select, input { width: 100%; padding: 8px; }
+    .row { display:flex; gap:8px; }
+    .row > * { flex:1; }
+    small { color:#666; }
+  </style>
+</head>
+<body>
+  <h3>GPT Translate</h3>
+  <div class="row">
+    <button id="toggle">Toggle on/off</button>
+    <button id="apply">Translate now</button>
+  </div>
+  <label for="lang">Target language</label>
+  <select id="lang">
+    <option>English</option>
+    <option>French</option>
+    <option>Spanish</option>
+    <option>German</option>
+    <option>Hindi</option>
+    <option>Arabic</option>
+    <option>Portuguese</option>
+    <option>Russian</option>
+    <option>Japanese</option>
+    <option>Korean</option>
+    <option>Chinese (Simplified)</option>
+  </select>
+  <label for="model">Model</label>
+  <input id="model" placeholder="gpt-4o-mini" />
+  <small>Tip: Use a fast/cheap model for big pages.</small>
+  <script src="popup.js"></script>
+</body>
+</html>
