@@ -4,9 +4,10 @@
   "version": "0.1.0",
   "description": "GPT Translate \u2014 auto-translate webpages using the OpenAI API.",
   "permissions": [
-    "storage",
+    "activeTab",
+    "identity",
     "scripting",
-    "activeTab"
+    "storage"
   ],
   "host_permissions": [
     "https://api.openai.com/*",
