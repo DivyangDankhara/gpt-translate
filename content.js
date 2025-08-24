@@ -1,5 +1,42 @@
 import { chunkArray, isVisible, getPageLang } from "./translator.js";
 
+function toast(msg, type="info") {
+  try {
+    const hostId = "gpt-translate-toast-host";
+    let host = document.getElementById(hostId);
+    if (!host) {
+      host = document.createElement("div");
+      host.id = hostId;
+      Object.assign(host.style, {
+        position: "fixed",
+        zIndex: 2147483647,
+        right: "12px",
+        bottom: "12px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
+        maxWidth: "320px",
+        fontFamily: "system-ui, sans-serif"
+      });
+      document.documentElement.appendChild(host);
+    }
+    const el = document.createElement("div");
+    el.textContent = msg;
+    Object.assign(el.style, {
+      background: type === "error" ? "#fee2e2" : type === "success" ? "#dcfce7" : "#e5e7eb",
+      color: "#111827",
+      border: "1px solid " + (type === "error" ? "#ef4444" : type === "success" ? "#22c55e" : "#9ca3af"),
+      borderRadius: "8px",
+      padding: "10px 12px",
+      boxShadow: "0 2px 10px rgba(0,0,0,.08)",
+      fontSize: "12px"
+    });
+    host.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  } catch {}
+}
+
+
 const STATE = {
   enabled: true,
   translating: false,
@@ -47,20 +84,23 @@ async function translatePage() {
 
     if (!items.length) { STATE.translating = false; return; }
 
-    const chunks = chunkArray(items, 60);
+    const chunks = chunkArray(items, 20);
     for (const chunk of chunks) {
       const payload = chunk.map(x => ({ id: x.id, text: x.text }));
       const resp = await chrome.runtime.sendMessage({ type: "TRANSLATE_BATCH", payload });
-      if (!resp?.ok) throw new Error(resp?.error || "Translation failed");
+      if (!resp?.ok) { toast("GPT Translate: " + (resp?.error || "Translation failed"), "error"); throw new Error(resp?.error || "Translation failed"); }
       const map = new Map(resp.data.map(r => [r.id, r.translated]));
+      let changed = 0;
       for (const item of chunk) {
         const t = map.get(item.id) ?? item.text;
-        if (t && item.node.nodeValue !== t) item.node.nodeValue = t;
+        if (t && item.node.nodeValue !== t) { item.node.nodeValue = t; changed++; }
         markDone(item.node);
       }
     }
+      if (changed > 0) toast(`GPT Translate: translated ${changed} snippet(s)`, "success");
   } catch (e) {
     console.warn("[GPT Translate] Error:", e);
+    toast("GPT Translate error: " + (e?.message || e), "error");
   } finally {
     STATE.translating = false;
   }
